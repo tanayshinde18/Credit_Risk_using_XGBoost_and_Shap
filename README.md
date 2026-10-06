@@ -150,9 +150,14 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /docs
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.10
 ```
 
 No Node.js build step is required.
+
+Python is pinned with `.python-version` and `PYTHON_VERSION` because Render's default Python version can be newer than the binary wheels available for this ML stack. Without this pin, packages such as pandas may try to compile from source during deployment and fail.
 
 ## Troubleshooting
 
