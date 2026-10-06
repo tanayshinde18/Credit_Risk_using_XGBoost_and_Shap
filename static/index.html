@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07111f" />
+  <meta name="description" content="Credit risk assessment dashboard" />
+  <title>CreditLens — Credit Risk Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="CreditLens home">
+      <span class="brand-mark">
+        <span></span><span></span><span></span>
+      </span>
+      <span>Credit<span>Lens</span></span>
+    </a>
+    <div class="status-pill"><i></i> Model online</div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow"><span></span> AI-POWERED CREDIT ASSESSMENT</div>
+      <h1>Assess credit risk<br><em>with clarity.</em></h1>
+      <p class="hero-copy">
+        Enter the applicant's financial profile and let the trained model estimate
+        the probability of loan default.
+      </p>
+      <div class="hero-meta">
+        <div><strong>12</strong><span>model inputs</span></div>
+        <div><strong>Real-time</strong><span>prediction</span></div>
+        <div><strong>Adaptive</strong><span>decision threshold</span></div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <form id="riskForm" class="card form-card" novalidate>
+        <div class="card-heading">
+          <div>
+            <span class="section-kicker">01 / APPLICANT</span>
+            <h2>Applicant profile</h2>
+          </div>
+          <span class="step-badge">1 of 2</span>
+        </div>
+
+        <div class="field-grid">
+          <label class="field">
+            <span>Age</span>
+            <div class="input-wrap"><input type="number" name="person_age" min="18" max="100" step="1" placeholder="e.g. 29" required></div>
+          </label>
+          <label class="field">
+            <span>Annual income</span>
+            <div class="input-wrap prefix"><b>₹</b><input type="number" name="person_income" min="0" step="1000" placeholder="e.g. 650000" required></div>
+          </label>
+          <label class="field">
+            <span>Employment length</span>
+            <div class="input-wrap suffix"><input type="number" name="person_emp_length" min="0" max="60" step="0.5" placeholder="Years" required><b>yr</b></div>
+          </label>
+          <label class="field">
+            <span>Credit history</span>
+            <div class="input-wrap suffix"><input type="number" name="cb_person_cred_hist_length" min="0" max="60" step="1" placeholder="Years" required><b>yr</b></div>
+          </label>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="card-heading compact">
+          <div>
+            <span class="section-kicker">02 / LOAN</span>
+            <h2>Loan details</h2>
+          </div>
+        </div>
+
+        <div class="field-grid">
+          <label class="field">
+            <span>Home ownership</span>
+            <select name="person_home_ownership" required>
+              <option value="" selected disabled>Select ownership</option>
+              <option value="RENT">Rent</option>
+              <option value="OWN">Own</option>
+              <option value="MORTGAGE">Mortgage</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Loan intent</span>
+            <select name="loan_intent" required>
+              <option value="" selected disabled>Select purpose</option>
+              <option value="EDUCATION">Education</option>
+              <option value="MEDICAL">Medical</option>
+              <option value="VENTURE">Venture</option>
+              <option value="PERSONAL">Personal</option>
+              <option value="DEBTCONSOLIDATION">Debt consolidation</option>
+              <option value="HOMEIMPROVEMENT">Home improvement</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Loan grade</span>
+            <select name="loan_grade" required>
+              <option value="" selected disabled>Select grade</option>
+              <option value="A">A</option><option value="B">B</option>
+              <option value="C">C</option><option value="D">D</option>
+              <option value="E">E</option><option value="F">F</option><option value="G">G</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Interest rate</span>
+            <div class="input-wrap suffix"><input type="number" name="loan_int_rate" min="0" max="100" step="0.01" placeholder="e.g. 10.5" required><b>%</b></div>
+          </label>
+          <label class="field">
+            <span>Loan amount</span>
+            <div class="input-wrap prefix"><b>₹</b><input type="number" name="loan_amnt" min="0" step="500" placeholder="e.g. 250000" required></div>
+          </label>
+          <label class="field">
+            <span>Loan / income ratio</span>
+            <div class="input-wrap suffix"><input type="number" name="loan_percent_income" min="0" max="1" step="0.01" placeholder="e.g. 0.25" required><b>×</b></div>
+          </label>
+          <label class="field">
+            <span>Previous default</span>
+            <select name="cb_person_default_on_file" required>
+              <option value="" selected disabled>Select status</option>
+              <option value="N">No</option>
+              <option value="Y">Yes</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="formError" class="form-error" role="alert"></div>
+
+        <button class="predict-btn" id="predictBtn" type="submit">
+          <span class="btn-label">Assess credit risk</span>
+          <span class="btn-loader" aria-hidden="true"></span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+        </button>
+        <p class="fine-print">Prediction is generated by the deployed machine-learning model. It is not financial advice.</p>
+      </form>
+
+      <aside class="card result-card" id="resultCard">
+        <div class="result-top">
+          <div>
+            <span class="section-kicker">MODEL OUTPUT</span>
+            <h2>Risk assessment</h2>
+          </div>
+          <span class="live-dot">LIVE</span>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+          <div class="pulse-ring"><span>◎</span></div>
+          <h3>Ready when you are.</h3>
+          <p>Complete the applicant profile and run an assessment to see the model's result.</p>
+        </div>
+
+        <div class="result-content hidden" id="resultContent">
+          <div class="score-area">
+            <div class="score-ring" id="scoreRing">
+              <div class="score-inner">
+                <strong id="probability">0%</strong>
+                <span>default probability</span>
+              </div>
+            </div>
+            <div class="risk-copy">
+              <span class="risk-label" id="riskLabel">LOW RISK</span>
+              <h3 id="riskTitle">Low default risk</h3>
+              <p id="riskDescription">The model estimates a relatively low likelihood of default for this application.</p>
+            </div>
+          </div>
+
+          <div class="meter-block">
+            <div class="meter-label"><span>Model probability</span><strong id="probabilityText">0%</strong></div>
+            <div class="meter"><i id="probabilityBar"></i><b id="thresholdMarker"></b></div>
+            <div class="meter-scale"><span>0%</span><span id="thresholdText">Decision threshold: 50%</span><span>100%</span></div>
+          </div>
+
+          <div class="decision-box" id="decisionBox">
+            <span class="decision-icon" id="decisionIcon">✓</span>
+            <div><strong id="decisionTitle">Lower risk profile</strong><p id="decisionText">The predicted probability is below the model's decision threshold.</p></div>
+          </div>
+
+          <button type="button" class="secondary-btn" id="resetBtn">Run another assessment <span>↗</span></button>
+        </div>
+      </aside>
+    </section>
+
+    <footer>
+      <span>CreditLens</span>
+      <span>FastAPI · scikit-learn · Render</span>
+    </footer>
+  </main>
+
+  <script src="/script.js"></script>
+</body>
+</html>
